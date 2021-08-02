@@ -25,15 +25,15 @@ function Home(props) {
         <div className="container">
             <div className="row align-items-start">
 
-                <div className="col-12 col-md m-1">
+                <div className="col-3 col-sm m-1">
                     <RenderCard item={props.dish} />
                 </div>
 
-                <div className="col-12 col-md m-1">
+                <div className="col-3 col-sm m-1">
                     <RenderCard item={props.promotion} />
                 </div>
 
-                <div className="col-12 col-md m-1">
+                <div className="col-3 col-sm m-1">
                     <RenderCard item={props.leader} />
                 </div>
 
