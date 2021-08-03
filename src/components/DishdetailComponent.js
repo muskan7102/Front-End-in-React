@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import {
     Button, Modal, ModalBody, ModalHeader, Label, Row, Col
 } from "reactstrap";
-
+import { Loading } from './LoadingComponent';
 import { Control, LocalForm, Errors } from 'react-redux-form';
 
 const required = (val) => val && val.length; //value > 0
@@ -29,6 +29,8 @@ class CommentForm extends Component {
     handleCommentFormSubmit(values) {
         console.log("Current State is: " + JSON.stringify(values));
         alert("Current State is: " + JSON.stringify(values));
+        this.props.addComment(this.props.dishId, values.rating, values.author, values.comment);
+    
 
 
     }
@@ -177,7 +179,7 @@ function RenderDish({dish}) {
         }
     }
 
-    function RenderComments({dish,comments}){
+    function RenderComments({comments, addComment, dishId}){
         if (comments == null) {
             return (<div></div>)
         }
@@ -204,21 +206,32 @@ function RenderDish({dish}) {
                 <ul className='list-unstyled'>
                     {cmnts}
                 </ul>
-                <CommentForm dish={dish} comments={comments} />
+                <CommentForm dishId={dishId} addComment={addComment} />
             </div>
         )
     }
 
 
     const DishDetail = (props) => {
-
-        const dish = props.dish
-        
-    
-        if (dish == null) {
-            return (<div></div>);
+        if (props.isLoading) {
+            return(
+                <div className="container">
+                    <div className="row">            
+                        <Loading />
+                    </div>
+                </div>
+            );
         }
-
+        else if (props.errMess) {
+            return(
+                <div className="container">
+                    <div className="row">            
+                        <h4>{props.errMess}</h4>
+                    </div>
+                </div>
+            );
+        }
+        else if (props.dish != null) {
         return (
             <div className="container">
                 <div className="row">
@@ -239,12 +252,12 @@ function RenderDish({dish}) {
 
                 <div className='row'>
                     <RenderDish dish={ props.dish } />
-                    <RenderComments dish={props.dish} comments={ props.comments } />
+                    <RenderComments comments={props.comments} addComment={props.addComment} dishId={props.dish.id} />
                 </div>
 
 
             </div>
-        )
+        );}
     }
 
 
